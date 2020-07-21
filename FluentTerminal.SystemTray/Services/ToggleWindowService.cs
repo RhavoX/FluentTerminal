@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.System;
+using System.Windows.Forms;
 using static FluentTerminal.SystemTray.Native.WindowApi;
 
 namespace FluentTerminal.SystemTray.Services
@@ -58,25 +59,25 @@ namespace FluentTerminal.SystemTray.Services
                 try
                 {
                     var key = Utilities.ExtendVirtualKeyToInputKey((ExtendedVirtualKey)keyBinding.Key);
-                    var modifiers = ModifierKeys.None;
+                    var modifiers = Keys.None;
                     if (keyBinding.Alt)
                     {
-                        modifiers |= ModifierKeys.Alt;
+                        modifiers |= Keys.Alt;
                     }
                     if (keyBinding.Ctrl)
                     {
-                        modifiers |= ModifierKeys.Control;
+                        modifiers |= Keys.Control;
                     }
                     if (keyBinding.Shift)
                     {
-                        modifiers |= ModifierKeys.Shift;
+                        modifiers |= Keys.Shift;
                     }
                     if (keyBinding.Meta)
                     {
-                        modifiers |= ModifierKeys.Windows;
+                        modifiers |= Keys.LWin;
                     }
 
-                    var hotKey = new HotKey(key, modifiers);
+                    HotKey hotKey = new HotKey(key, modifiers);
 
                     _dispatcher.Invoke(() =>
                     {

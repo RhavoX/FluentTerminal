@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,12 +14,12 @@ namespace FluentTerminal.SystemTray
 
         public SystemTrayApplicationContext()
         {
-            var openMenuItem = new MenuItem("Show", new EventHandler(OpenAppAsync));
-            var newWindowItem = new MenuItem("New terminal", new EventHandler(NewWindow));
-            var settingsMenuItem = new MenuItem("Show settings", new EventHandler(ShowSettings));
-            var exitMenuItem = new MenuItem("Exit", new EventHandler(Exit));
+            var openMenuItem = new ToolStripMenuItem("Show", null, new EventHandler(OpenAppAsync));
+            var newWindowItem = new ToolStripMenuItem("New terminal", null, new EventHandler(NewWindow));
+            var settingsMenuItem = new ToolStripMenuItem("Show settings", null, new EventHandler(ShowSettings));
+            var exitMenuItem = new ToolStripMenuItem("Exit", null, new EventHandler(Exit));
 
-            openMenuItem.DefaultItem = true;
+            //openMenuItem.DefaultItem = true;
 
             _notifyIcon = new NotifyIcon();
             _notifyIcon.DoubleClick += OpenAppAsync;
@@ -33,7 +34,13 @@ namespace FluentTerminal.SystemTray
                 _notifyIcon.Icon = Properties.Resources.Icon_mono_dark;
             }
 
-            _notifyIcon.ContextMenu = new ContextMenu(new MenuItem[] { openMenuItem, newWindowItem, settingsMenuItem, exitMenuItem });
+            Container container = new Container();
+            container.Add(openMenuItem);
+            container.Add(newWindowItem);
+            container.Add(settingsMenuItem);
+            container.Add(exitMenuItem);
+
+            _notifyIcon.ContextMenuStrip = new ContextMenuStrip(container);
             _notifyIcon.Visible = true;
         }
 
